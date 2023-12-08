@@ -17,7 +17,6 @@ function startVideo() {
 
 
 video.addEventListener('play', async () => {
-
     let canvas
     if (canvas) canvas.remove()
     canvas = faceapi.createCanvasFromMedia(video)
@@ -35,15 +34,15 @@ video.addEventListener('play', async () => {
         const detections = await faceapi.detectAllFaces(video).withFaceLandmarks().withFaceDescriptors()
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        console.log(resizedDetections, "resizedDetections <----------")
         const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor))
         console.log(results)
         results.forEach((result, i) => {
-            console.log(results)
             const box = resizedDetections[i].detection.box
             console.log(box)
             const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
-            drawBox.draw(canvas)
         })
+        console.log("func ran")
       }, 100)
 })
 
